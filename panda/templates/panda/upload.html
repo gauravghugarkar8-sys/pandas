@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Pandas Operations</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            padding: 30px;
+            color: #333;
+        }
+
+        h2, h3 {
+            color: #2c3e50;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            width: 350px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        hr {
+            margin: 25px 0;
+        }
+
+        p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Upload CSV File</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Upload</button>
+</form>
+
+<hr>
+
+{% if preview %}
+<h3>Cleaned Data Preview</h3>
+{{ preview|safe }}
+
+<h3>Removed Blank Rows</h3>
+{{ df_dropped|safe }}
+
+<h3>Dataset Info</h3>
+<p><b>Rows, Columns:</b> {{ operations.shape }}</p>
+<p><b>Columns:</b> {{ operations.columns }}</p>
+
+<h3>Missing Values</h3>
+<p><b>Before:</b> {{ operations.missing_before }}</p>
+<p><b>After fillna:</b> {{ operations.missing_after_fill }}</p>
+
+<h3>Aggregations</h3>
+<p>Sum: {{ operations.sum }}</p>
+<p>Mean: {{ operations.mean }}</p>
+<p>Min: {{ operations.min }}</p>
+<p>Max: {{ operations.max }}</p>
+
+{% if operations.groupby %}
+<h3>Group By Result</h3>
+{{ operations.groupby }}
+{% endif %}
+
+{% endif %}
+
+</body>
+</html>
